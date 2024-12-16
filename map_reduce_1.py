@@ -12,16 +12,17 @@ class MostScoringQuarter(MRJob):
         ]
     
     def mapper_get_points(self, _, line):
-        
-        fields = line.split(',')
-        quarter = fields[5]
-        team = fields[11]
-        points = fields[27]
-        points = int(points)  
-        
-        # Yield key as (team, quarter) and value as points scored
-        yield (team, quarter), points
-
+        try:
+            fields = line.split(',')
+            quarter = fields[5]
+            team = fields[11]
+            points = fields[27]
+            points = int(points)  
+            
+            # Yield key as (team, quarter) and value as points scored
+            yield (team, quarter), points
+        except ValueError:
+            pass
     def reducer_aggregate_points(self, team_quarter, points_list):
         # Sum all the points scored by a team in a particular quarter
         total_points = sum(points_list)

@@ -12,14 +12,16 @@ class MostScoringPlayer(MRJob):
         ]
     
     def mapper_get_player_points(self, _, line):
-        fields = line.split(',')
-        player = fields[7]
-        points = fields[27]
-        points = int(points)  
-        
-        # Yield key as player and value as points scored
-        yield player, points
-
+        try:
+            fields = line.split(',')
+            player = fields[7]
+            points = fields[27]
+            points = int(points)  
+            
+            # Yield key as player and value as points scored
+            yield player, points
+        except ValueError:
+            pass
     def reducer_aggregate_player_points(self, player, points_list):
         # Sum all the points scored by each player
         total_points = sum(points_list)
