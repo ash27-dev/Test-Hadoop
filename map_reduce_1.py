@@ -17,7 +17,8 @@ class MostScoringQuarter(MRJob):
             quarter = fields[5]
             team = fields[11]
             points = fields[27]
-            points = int(points)  
+            if team.strip() and points.isdigit():  # Check for non-empty player and valid points
+                points = int(points)  # Convert points to integer 
             
             # Yield key as (team, quarter) and value as points scored
             yield (team, quarter), points
